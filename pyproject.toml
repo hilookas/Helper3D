@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "helper3d"
+version = "2025.0.0"
+dependencies = [
+  "open3d",
+  "trimesh",
+  "numpy",
+  "Pillow",
+]
+requires-python = ">=3.8"
+authors = [
+]
+maintainers = [
+]
+description = "Integrate some useful code snippets for 3D visualization using Open3D and URDF supporter using trimesh (open3d texture support is not good....)."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICEN[CS]E.*"]
+keywords = []
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python"
+]
+
+[project.optional-dependencies]
+gui = [
+]
+cli = [
+]
+
+[project.urls]
+Homepage = "https://github.com/Jianghanxiao/Helper3D"
+
+[tool.hatch.build.targets.wheel]
+packages = ["open3d_RGBD", "trimesh_render", "open3d_utils", "trimesh_URDF"]
