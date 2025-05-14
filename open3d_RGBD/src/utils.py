@@ -2,6 +2,24 @@ import numpy as np
 import open3d as o3d
 import copy
 
+def as_open3d(geometry):
+    # See: https://github.com/mikedh/trimesh/blob/f37c814f21c299b6bff6a347da50eddbe2c6a270/trimesh/base.py
+    """
+    Return an `open3d.geometry.TriangleMesh` version of
+    the current mesh.
+
+    Returns
+    ---------
+    open3d : open3d.geometry.TriangleMesh
+        Current mesh as an open3d object.
+    """
+    # create from numpy arrays
+    return o3d.geometry.TriangleMesh(
+        vertices=o3d.utility.Vector3dVector(
+            geometry.vertices.copy()),
+        triangles=o3d.utility.Vector3iVector(
+            geometry.faces.copy()))
+
 # Convert the trimesh scene into open3d geometry
 def getOpen3DFromTrimeshScene(trimesh_scene, random_color=True, color = np.array([1, 0, 0])):
     mesh = o3d.geometry.TriangleMesh()
@@ -16,7 +34,7 @@ def getOpen3DFromTrimeshScene(trimesh_scene, random_color=True, color = np.array
         # Take the scene transformation into account
         geometry.apply_transform(np.dot(trimesh_scene.graph["world"][0], geo_trans_mapping[key]))
         # Convert the mesh into open3d
-        temp_mesh = geometry.as_open3d
+        temp_mesh = as_open3d(geometry)
         if random_color:
             temp_mesh.paint_uniform_color(np.random.rand(3))
         mesh += temp_mesh
