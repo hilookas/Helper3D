@@ -118,12 +118,13 @@ class SceneNode:
                 f"The joint type {self.joint.type} cannot be articualted or not supported yet"
             )
             return
+        self.interactMatrix = np.eye(4)
+        self.interactMatrix = np.dot(np.linalg.inv(self.localTransform), self.interactMatrix)
         if self.joint.joint_type == "revolute" or self.joint.joint_type == "continuous":
-            self.translate(-self.joint.origin["xyz"])
             self.rotate(self.joint.axis, change)
-            self.translate(self.joint.origin["xyz"])
         if self.joint.joint_type == "prismatic":
             self.translate(self.joint.axis * change)
+        self.interactMatrix = np.dot(self.localTransform, self.interactMatrix)
         self.needUpdate = True
 
     def translate(self, translation):
